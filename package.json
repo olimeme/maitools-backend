@@ -1,0 +1,15 @@
+{
+  "name": "maitools-backend",
+  "version": "1.0.0",
+  "description": "backend for maitools",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olimeme/maitools-backend.git"
+  },
+  "author": "Alibek Mombekov",
+  "license": "ISC"
+}
