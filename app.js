@@ -14,9 +14,9 @@ try {
 } catch (error) {
   handleError(error);
 }
-// process.on("unhandledRejection", (error) => {
-//   console.log("unhandledRejection", error.message);
-// });
+process.on("unhandledRejection", (error) => {
+  console.log("unhandledRejection", error.message);
+});
 
 // parse requests of content-type - application/json
 app.use(express.json());
