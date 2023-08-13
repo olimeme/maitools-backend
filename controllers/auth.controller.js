@@ -12,11 +12,12 @@ exports.signup = (req, res) => {
 
   user
     .save()
-    .then((user) =>
+    .then((user) => {
+      console.log(`User registered: \n\n ${user}`);
       res.status(200).send({
         message: "User Registered successfully",
-      })
-    )
+      });
+    })
     .catch((err) =>
       res.status(500).send({
         message: err,
@@ -57,7 +58,7 @@ exports.signin = (req, res) => {
           expiresIn: 86400,
         }
       );
-
+      console.log(`User logged in: \n\n ${user}`);
       //responding to client request with user profile success message and  access token .
       return res.status(200).send({
         user: {
