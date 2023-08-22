@@ -7,16 +7,14 @@ const express = require("express"),
 
 const PORT = process.env.PORT || 8000;
 
-//Connect to database
-try {
-  mongoose.connect("mongodb://localhost:27017/usersdb", {
+mongoose
+  .connect(process.env.MONGODBATLAS_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-  });
-  console.log("connected to db");
-} catch (error) {
-  handleError(error);
-}
+  })
+  .then(() => console.log("connected to mongodb atlas"))
+  .catch((error) => handleError(error));
+
 process.on("unhandledRejection", (error) => {
   console.log("unhandledRejection", error.message);
 });
