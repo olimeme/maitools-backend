@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+bfg.jar
 
 # Editor directories and files
 .vscode/*
