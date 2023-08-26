@@ -3,7 +3,8 @@ const express = require("express"),
   app = express(),
   mongoose = require("mongoose"),
   cors = require("cors"),
-  userRoutes = require("./routes/user");
+  userRoutes = require("./routes/user"),
+  todoRoutes = require("./routes/todo");
 
 const PORT = process.env.PORT || 8000;
 
@@ -31,7 +32,7 @@ app.use(
 
 //using user route
 app.use(userRoutes);
-
+app.use(todoRoutes);
 //setup server to listen on port 8080
 app.listen(PORT, () => {
   console.log(`Server is live on port ${PORT}`);

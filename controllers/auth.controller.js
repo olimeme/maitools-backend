@@ -55,19 +55,24 @@ exports.signin = (req, res) => {
         },
         process.env.API_SECRET,
         {
-          expiresIn: 86400,
+          expiresIn: 3600,
         }
       );
       console.log(`User logged in: \n\n ${user}`);
       //responding to client request with user profile success message and  access token .
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: true, // Only send over HTTPS
+        sameSite: "strict", // Restrict cookie to same site
+        maxAge: 3600,
+      });
       return res.status(200).send({
         user: {
           id: user._id,
           email: user.email,
           fullName: user.fullName,
         },
-        message: "Login successfull",
-        accessToken: token,
+        message: "Login successful",
       });
     })
     .catch((err) =>
