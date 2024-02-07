@@ -36,6 +36,7 @@ router.post(
     }
     res.status(200).send({
       message: "Deck created successfully",
+      deck: req.deck,
     });
   }
 );

@@ -18,7 +18,7 @@ exports.getAllDecks = (req, res) => {
     });
 };
 
-exports.createDeck = (req, res) => {
+exports.createDeck = (req, res, next) => {
   const deck = new SpacedRepDeck({
     deckName: req.body.deckName,
     cards: [],
@@ -30,9 +30,8 @@ exports.createDeck = (req, res) => {
   deck
     .save()
     .then((deck) => {
-      res.status(200).send({
-        deck: deck,
-      });
+      req.deck = deck;
+      next();
     })
     .catch((err) => {
       res.status(500).send({
@@ -60,12 +59,11 @@ exports.updateDeck = (req, res) => {
     });
 };
 
-exports.deleteDeck = (req, res) => {
+exports.deleteDeck = (req, res, next) => {
   SpacedRepDeck.findByIdAndDelete(req.body.deckId)
     .then((deck) => {
-      res.status(200).send({
-        deck: deck,
-      });
+      req.deck = deck;
+      next();
     })
     .catch((err) => {
       res.status(500).send({
