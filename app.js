@@ -1,3 +1,5 @@
+const SpacedRepCard = require("./models/spaced-rep-card");
+
 require("dotenv").config();
 const express = require("express"),
   app = express(),
@@ -5,6 +7,7 @@ const express = require("express"),
   cors = require("cors"),
   userRoutes = require("./routes/user"),
   todoRoutes = require("./routes/todo");
+  spacedRepRoutes = require("./routes/spaced-rep");
 
 const PORT = process.env.PORT || 8000;
 
@@ -33,6 +36,7 @@ app.use(
 //using user route
 app.use(userRoutes);
 app.use(todoRoutes);
+app.use(spacedRepRoutes);
 //setup server to listen on port 8080
 app.listen(PORT, () => {
   console.log(`Server is live on port ${PORT}`);

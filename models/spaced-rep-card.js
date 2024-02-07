@@ -20,12 +20,12 @@ const cardSchema = new mongoose.Schema({
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", 
+    ref: "User",
     required: true,
   },
 });
 
 // Define the Card model
-const Card = mongoose.model("Card", cardSchema);
+const SpacedRepCard = mongoose.model("SpacedRepCard", cardSchema);
 
-module.exports = Card;
+module.exports = SpacedRepCard;
