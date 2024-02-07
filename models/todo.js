@@ -1,24 +1,34 @@
-var mongoose = require("mongoose"),
-  Schema = mongoose.Schema;
+var mongoose = require("mongoose");
 
-var todoSchema = new Schema({
-  title: {
-    type: String,
-    required: [true, "title not provided"],
+//create todo mongoose schema
+const todoSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 3,
+    },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 3,
+    },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
   },
-  description: {
-    type: String,
-    required: [true, "description not provided"],
-  },
-  status: {
-    type: String,
-    enum: ["pending", "completed"],
-    required: [true, "status not provided"],
-  },
-  created_by: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
-module.exports = mongoose.model("Todo", todoSchema);
+const Todo = mongoose.model("Todo", todoSchema);
+module.exports = Todo;
