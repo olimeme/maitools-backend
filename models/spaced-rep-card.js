@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 // Define the Card schema
 const cardSchema = new mongoose.Schema({
+  //create card schema that contains front, back, the deck in which the card belongs to, the next review date, created date, and updated date
   front: {
     type: String,
     required: true,
@@ -10,18 +11,22 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  interval: {
-    type: Number,
-    default: 1, // Represents the current repetition interval, initially set to 1 (in days)
+  deckId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SpacedRepDeck",
+    required: true,
   },
   nextReviewDate: {
     type: Date,
     required: true,
   },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+  created: {
+    type: Date,
+    default: Date.now,
+  },
+  updated: {
+    type: Date,
+    default: Date.now,
   },
 });
 

@@ -1,41 +1,59 @@
 var express = require("express"),
   router = express.Router(),
   verifyToken = require("../middlewares/authJWT");
-spacedRepController = require("../controllers/spaced-rep.controller");
+const {
+  getAllDecks,
+  createDeck,
+  updateDeck,
+  deleteDeck,
+} = require("../controllers/spaced-rep.controller");
 
 router.get(
-  "/spaced-rep",
+  "/spaced-rep/get-deck",
   verifyToken,
-  spacedRepController.getAllCards,
+  getAllDecks,
   function (req, res) {
-    console.log(req.user);
     if (!req.user) {
       res.status(403).send({
         message: "Invalid JWT token",
       });
     }
     res.status(200).send({
-      cards: req.cards,
+      message: "Decks fetched successfully",
     });
   }
 );
 
 router.post(
-  "/spaced-rep",
+  "/spaced-rep/create-deck",
   verifyToken,
-  spacedRepController.createCard,
+  createDeck,
   function (req, res) {
-    console.log(req.user);
     if (!req.user) {
       res.status(403).send({
         message: "Invalid JWT token",
       });
     }
     res.status(200).send({
-      message: "Card created successfully",
+      message: "Deck created successfully",
     });
-    console.log(req.cards);
   }
 );
+
+router.put(
+  "/spaced-rep/update-deck",
+  verifyToken,
+  updateDeck,
+  function (req, res) {}
+);
+
+router.delete(
+  "/spaced-rep/delete-deck",
+  verifyToken,
+  deleteDeck,
+  function (req, res) {}
+);
+
+// router.get("/spaced-rep/get-cards", verifyToken, function (req, res) {});
 
 module.exports = router;
