@@ -63,12 +63,13 @@ exports.updateDeck = (req, res) => {
 exports.deleteDeck = (req, res) => {
   SpacedRepDeck.findByIdAndDelete(req.body.deckId)
     .then((deck) => {
-      req.deck = deck;
-      next();
+      res.status(200).send({
+        deck: deck,
+      });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err,
+        message: err.message,
       });
     });
 };
