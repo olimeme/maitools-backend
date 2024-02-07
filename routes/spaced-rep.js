@@ -51,7 +51,16 @@ router.delete(
   "/spaced-rep/delete-deck",
   verifyToken,
   deleteDeck,
-  function (req, res) {}
+  function (req, res) {
+    if (!req.user) {
+      res.status(403).send({
+        message: "Invalid JWT token",
+      });
+    }
+    res.status(200).send({
+      message: "Deck deleted successfully",
+    });
+  }
 );
 
 // router.get("/spaced-rep/get-cards", verifyToken, function (req, res) {});
