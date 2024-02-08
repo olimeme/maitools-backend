@@ -45,7 +45,17 @@ router.put(
   "/spaced-rep/update-deck",
   verifyToken,
   updateDeck,
-  function (req, res) {}
+  function (req, res) {
+    if (!req.user) {
+      res.status(403).send({
+        message: "Invalid JWT token",
+      });
+    }
+    res.status(200).send({
+      message: "Deck updated successfully",
+      deck: req.deck,
+    });
+  }
 );
 
 router.delete(

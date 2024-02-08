@@ -40,7 +40,7 @@ exports.createDeck = (req, res, next) => {
     });
 };
 
-exports.updateDeck = (req, res) => {
+exports.updateDeck = (req, res, next) => {
   SpacedRepDeck.findByIdAndUpdate(
     req.body.deckId,
     {
