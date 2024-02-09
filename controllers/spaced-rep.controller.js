@@ -7,6 +7,11 @@ exports.getAllDecks = (req, res) => {
   })
     .populate("cards")
     .then((decks) => {
+      if (!decks) {
+        res.status(404).send({
+          message: "No decks found",
+        });
+      }
       res.status(200).send({
         decks: decks,
       });
