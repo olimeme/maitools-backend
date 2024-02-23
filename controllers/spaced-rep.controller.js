@@ -1,5 +1,5 @@
 const SpacedRepDeck = require("../models/spaced-rep-deck");
-const SpacedRepCard = require("../models/spaced-rep-card");
+const { SpacedRepCard } = require("../models/spaced-rep-card");
 
 exports.getAllDecks = (req, res) => {
   SpacedRepDeck.find({
@@ -85,17 +85,20 @@ exports.createCard = (req, res, next) => {
     nextReviewDate: new Date(),
   });
 
-  card
-    .save()
-    .then((card) => {
-      req.card = card;
-      next();
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message,
-      });
+  const deck = SpacedRepDeck.findById(req.body.deckId);
+
+  if (!deck) {
+    res.status(404).send({
+      message: "Deck not found",
     });
+  }
+  console.log(deck);
+  deck.cards.push(card);
+  deck.save().catch((err) => {
+    res.status(500).send({
+      message: err.message,
+    });
+  });
 };
 
 exports.updateCard = (req, res, next) => {

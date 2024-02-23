@@ -1,19 +1,12 @@
 const mongoose = require("mongoose");
 
-// Define the Card schema
 const cardSchema = new mongoose.Schema({
-  //create card schema that contains front, back, the deck in which the card belongs to, the next review date, created date, and updated date
   front: {
     type: String,
     required: true,
   },
   back: {
     type: String,
-    required: true,
-  },
-  deckId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "SpacedRepDeck",
     required: true,
   },
   nextReviewDate: {
@@ -33,4 +26,4 @@ const cardSchema = new mongoose.Schema({
 // Define the Card model
 const SpacedRepCard = mongoose.model("SpacedRepCard", cardSchema);
 
-module.exports = SpacedRepCard;
+module.exports = { SpacedRepCard, cardSchema };
