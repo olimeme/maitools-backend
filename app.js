@@ -7,7 +7,7 @@ const express = require("express"),
   cors = require("cors"),
   userRoutes = require("./routes/user"),
   todoRoutes = require("./routes/todo");
-  spacedRepRoutes = require("./routes/spaced-rep");
+spacedRepRoutes = require("./routes/spaced-rep");
 
 const PORT = process.env.PORT || 8000;
 
@@ -23,7 +23,12 @@ process.on("unhandledRejection", (error) => {
   console.log("unhandledRejection", error.message);
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 // parse requests of content-type - application/json
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
