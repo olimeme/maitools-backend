@@ -30,8 +30,6 @@ exports.createDeck = (req, res, next) => {
     userId: req.user.id,
   });
 
-  console.log(deck);
-
   deck
     .save()
     .then((deck) => {
@@ -92,7 +90,6 @@ exports.createCard = (req, res, next) => {
       message: "Deck not found",
     });
   }
-  console.log(deck);
   deck.cards.push(card);
   deck.save().catch((err) => {
     res.status(500).send({
