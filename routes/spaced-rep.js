@@ -106,6 +106,7 @@ router.post("/spaced-rep/create-card", verifyToken, async function (req, res) {
 
     // res.json(deck);
     res.status(200).send({
+      card: card,
       message: "Card created successfully",
     });
   } catch (error) {
