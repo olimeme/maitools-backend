@@ -6,6 +6,7 @@ const {
   createDeck,
   updateDeck,
   deleteDeck,
+  getAllCards,
   createCard,
   updateCard,
   deleteCard,
@@ -75,6 +76,22 @@ router.delete(
     }
     res.status(200).send({
       message: "Deck deleted successfully",
+    });
+  }
+);
+
+router.get(
+  "/spaced-rep/get-all-cards",
+  verifyToken,
+  getAllCards,
+  async function (req, res) {
+    if (!req.user) {
+      res.status(403).send({
+        message: "Invalid JWT token",
+      });
+    }
+    res.status(200).send({
+      cards: req.cards,
     });
   }
 );

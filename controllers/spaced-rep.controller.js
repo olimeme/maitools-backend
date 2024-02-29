@@ -18,7 +18,7 @@ exports.getAllDecks = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message,
+        message: "Error retrieving decks",
       });
     });
 };
@@ -38,7 +38,7 @@ exports.createDeck = (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message,
+        message: "Error creating deck",
       });
     });
 };
@@ -57,7 +57,7 @@ exports.updateDeck = (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err,
+        message: "Error updating deck",
       });
     });
 };
@@ -70,7 +70,31 @@ exports.deleteDeck = (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message,
+        message: "Error deleting deck",
+      });
+    });
+};
+
+exports.getAllCards = (req, res, next) => {
+  SpacedRepDeck.findById(req.body.deckId)
+    .populate("cards")
+    .then((deck) => {
+      if (!deck) {
+        res.status(404).send({
+          message: "Deck not found",
+        });
+      }
+      if (deck.cards.length === 0) {
+        res.status(404).send({
+          message: "No cards found",
+        });
+      }
+      req.cards = deck.cards;
+      next();
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving cards",
       });
     });
 };
@@ -93,7 +117,7 @@ exports.createCard = (req, res, next) => {
   deck.cards.push(card);
   deck.save().catch((err) => {
     res.status(500).send({
-      message: err.message,
+      message: "Error saving card to deck",
     });
   });
 };
@@ -113,7 +137,7 @@ exports.updateCard = (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message,
+        message: "Error updating card",
       });
     });
 };
@@ -126,7 +150,7 @@ exports.deleteCard = (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message,
+        message: "Error deleting card",
       });
     });
 };
