@@ -39,7 +39,7 @@ router.post("/markdown/export", verifyToken, function (req, res) {
           .end(pdfData);
       });
 
-      pdfDoc.text(text);
+      pdfDoc.font("./fonts/Quicksand-Regular.ttf").fontSize(14).text(text);
       pdfDoc.end();
       // res.download(pdfDoc, "exported-document.pdf", () => {
       //   fs.unlinkSync(pdfPath);
