@@ -8,6 +8,7 @@ const express = require("express"),
   userRoutes = require("./routes/user"),
   todoRoutes = require("./routes/todo");
 spacedRepRoutes = require("./routes/spaced-rep");
+markdownRoutes = require("./routes/markdown");
 
 const PORT = process.env.PORT || 8000;
 
@@ -42,6 +43,7 @@ app.use(
 app.use(userRoutes);
 app.use(todoRoutes);
 app.use(spacedRepRoutes);
+app.use(markdownRoutes);
 //setup server to listen on port 8080
 app.listen(PORT, () => {
   console.log(`Server is live on port ${PORT}`);
