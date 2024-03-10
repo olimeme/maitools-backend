@@ -11,7 +11,11 @@ const verifyToken = (req, res, next) => {
       req.headers.authorization.split(" ")[1],
       process.env.API_SECRET,
       function (err, decode) {
-        if (err) req.user = undefined;
+        if (!decode || err) {
+          req.user = undefined;
+          res.status(403).send({ message: "Invalid JWT token" });
+        }
+
         User.findOne({
           _id: decode.id,
         })
@@ -22,7 +26,7 @@ const verifyToken = (req, res, next) => {
           })
           .catch((err) =>
             res.status(500).send({
-              message: err,
+              message: "Please login in order to use this feature",
             })
           );
       }

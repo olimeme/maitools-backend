@@ -76,7 +76,6 @@ exports.deleteDeck = (req, res, next) => {
 };
 
 exports.getAllCards = (req, res, next) => {
-  console.log(req.query.deckId); 
   SpacedRepDeck.findById(req.query.deckId)
     .populate("cards")
     .then((deck) => {

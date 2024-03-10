@@ -6,12 +6,6 @@ const PDFDocument = require("pdfkit");
 const router = express.Router();
 
 router.post("/markdown/export", verifyToken, function (req, res) {
-  if (!req.user) {
-    res.status(403).send({
-      message: "Invalid JWT token",
-    });
-  }
-
   const { text, format } = req.body;
   if (!text || !format) {
     return res.status(400).json({ error: "Text and format are required." });
