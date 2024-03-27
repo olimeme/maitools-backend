@@ -15,26 +15,32 @@ const styles = {
   h1: {
     font: "../fonts/Quicksand-Bold.ttf",
     fontSize: 36,
+    padding: 10,
   },
   h2: {
     font: "../fonts/Quicksand-Bold.ttf",
     fontSize: 30,
+    padding: 10,
   },
   h3: {
     font: "../fonts/Quicksand-Bold.ttf",
     fontSize: 24,
+    padding: 10,
   },
   h4: {
     font: "../fonts/Quicksand-Bold.ttf",
     fontSize: 20,
+    padding: 10,
   },
   h5: {
     font: "../fonts/Quicksand-Bold.ttf",
     fontSize: 18,
+    padding: 10,
   },
   h6: {
     font: "../fonts/Quicksand-Bold.ttf",
     fontSize: 16,
+    padding: 10,
   },
   para: {
     font: "../fonts/Quicksand-Bold.ttf",
@@ -95,10 +101,6 @@ const colors = {
   default: "#002b36",
 };
 
-// shared lorem ipsum text so we don't need to copy it into every example
-const lorem =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in suscipit purus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus nec hendrerit felis. Morbi aliquam facilisis risus eu lacinia. Sed eu leo in turpis fringilla hendrerit. Ut nec accumsan nisl. Suspendisse rhoncus nisl posuere tortor tempus et dapibus elit porta. Cras leo neque, elementum a rhoncus ut, vestibulum non nibh. Phasellus pretium justo turpis. Etiam vulputate, odio vitae tincidunt ultricies, eros odio dapibus nisi, ut tincidunt lacus arcu eu elit. Aenean velit erat, vehicula eget lacinia ut, dignissim non tellus. Aliquam nec lacus mi, sed vestibulum nunc. Suspendisse potenti. Curabitur vitae sem turpis. Vestibulum sed neque eget dolor dapibus porttitor at sit amet sem. Fusce a turpis lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;";
-
 let codeBlocks = [];
 let lastType = null;
 
@@ -129,38 +131,37 @@ class Node {
       case "header":
         this.type = `h${this.attrs.level}`;
         break;
+      // case "code_block":
+      //   // use code mirror to syntax highlight the code block
+      //   var code = this.content[0].text;
+      //   this.content = [];
+      //   CodeMirror.runMode(code, "javascript", (text, style) => {
+      //     const color = colors[style] || colors.default;
+      //     const opts = {
+      //       color,
+      //       continued: text !== "\n",
+      //     };
 
-      case "code_block":
-        // use code mirror to syntax highlight the code block
-        var code = this.content[0].text;
-        this.content = [];
-        CodeMirror.runMode(code, "javascript", (text, style) => {
-          const color = colors[style] || colors.default;
-          const opts = {
-            color,
-            continued: text !== "\n",
-          };
+      //     return this.content.push(new Node(["code", opts, text]));
+      //   });
 
-          return this.content.push(new Node(["code", opts, text]));
-        });
+      //   if (this.content.length) {
+      //     this.content[this.content.length - 1].attrs.continued = false;
+      //   }
+      //   codeBlocks.push(code);
+      //   break;
 
-        if (this.content.length) {
-          this.content[this.content.length - 1].attrs.continued = false;
-        }
-        codeBlocks.push(code);
-        break;
-
-      case "img":
-        // images are used to generate inline example output
-        // stores the JS so it can be run
-        // in the render method
-        this.type = "example";
-        code = codeBlocks[this.attrs.alt];
-        if (code) {
-          this.code = code;
-        }
-        this.height = +this.attrs.title || 0;
-        break;
+      // case "img":
+      //   // images are used to generate inline example output
+      //   // stores the JS so it can be run
+      //   // in the render method
+      //   this.type = "example";
+      //   code = codeBlocks[this.attrs.alt];
+      //   if (code) {
+      //     this.code = code;
+      //   }
+      //   this.height = +this.attrs.title || 0;
+      //   break;
     }
 
     this.style = styles[this.type] || styles.para;
@@ -193,16 +194,25 @@ class Node {
 
   // renders this node and its subnodes to the document
   render(doc, continued) {
-    let y;
     if (continued == null) {
       continued = false;
     }
     // loop through subnodes and render them
     for (let index = 0; index < this.content.length; index++) {
       const fragment = this.content[index];
+      if (fragment.type === "listitem") {
+        // add a bullet point
+        const options = this.setStyle(doc);
+        doc.fontSize(this.style.fontSize).text("• ", {
+          continued: true,
+          ...options,
+        });
+      }
+
       if (fragment.type === "text") {
         // set styles and whether this fragment is continued (for rich text wrapping)
         const options = this.setStyle(doc);
+
         if (options.continued == null) {
           options.continued = continued || index < this.content.length - 1;
         }
@@ -213,6 +223,22 @@ class Node {
         }
 
         doc.text(fragment.text, options);
+
+        if (
+          this.type === "h1" ||
+          this.type === "h2" ||
+          this.type === "h3" ||
+          this.type === "h4" ||
+          this.type === "h5" ||
+          this.type === "h6"
+        ) {
+          doc
+            .lineWidth(0.5)
+            .fillColor("gray")
+            .moveTo(72, doc.y + 5)
+            .lineTo(542, doc.y + 5)
+            .stroke();
+        }
       } else {
         fragment.render(
           doc,
@@ -234,6 +260,7 @@ const render = (doc, text) => {
   codeBlocks = [];
   const tree = markdown.parse(text);
   tree.shift();
+  console.log(tree);
 
   const result = [];
   while (tree.length) {
